@@ -1,0 +1,30 @@
+# - name: Gather information about any instance with Name beginning with lucas
+#   amazon.aws.ec2_instance_info:
+#     region: "{{ ec2_region }}"
+#     filters:
+#       "tag:Name": "RHEL-*"
+#       instance-state-name: [ "running"]
+#   register: ec2_node_info
+
+
+# public_dns_name 
+
+- name: MasterInstallation
+  hosts: workers
+  become: true
+  vars_files:
+        - ./secure.yml
+  roles:
+      - role: kubernetes_master
+
+
+- name: WorkerInstallation
+  hosts: workers
+  vars_files:
+          - ./secure.yml
+  vars_prompt:
+      - name: token_join
+        prompt: "Enter your token to join master"
+        private: False
+  roles:
+    - role: kubernetes_slave 
