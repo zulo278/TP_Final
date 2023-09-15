@@ -38,6 +38,7 @@ resource "aws_instance" "kubernetes_controllers" {
   key_name      = aws_key_pair.kubernetes_key_pair.key_name
   associate_public_ip_address = true
   private_ip = "10.0.1.1${count.index}"
+  security_groups = [aws_security_group.kubernetes_security_group.id]
 
   user_data = <<-EOF
     #cloud-config
@@ -63,6 +64,7 @@ resource "aws_instance" "kubernetes_workers" {
   key_name      = aws_key_pair.kubernetes_key_pair.key_name
   associate_public_ip_address = true
   private_ip = "10.0.1.2${count.index}"
+  security_groups = [aws_security_group.kubernetes_security_group.id]
 
   user_data = <<-EOF
     #cloud-config

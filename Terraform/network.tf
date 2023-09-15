@@ -80,6 +80,7 @@ resource "aws_security_group_rule" "kubernetes_ingress_rule_1" {
   security_group_id = aws_security_group.kubernetes_security_group.id
 }
 
+
 resource "aws_security_group_rule" "kubernetes_ingress_rule_2" {
   type        = "ingress"
   from_port   = 0
