@@ -1,25 +1,13 @@
 # Compute Instances
 
 # Instance Image
-data "aws_ami" "ubuntu" {
+data "aws_ami" "aws" {
   most_recent = true
-
-  filter {
-    name   = "root-device-type"
-    values = ["ebs"]
-  }
 
   filter {
     name   = "architecture"
     values = ["x86_64"]
   }
-
-  filter {
-    name   = "name"
-    values = ["ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"]
-  }
-
-  owners = ["099720109477"]
 }
 
 # SSH Key Pair
@@ -31,8 +19,7 @@ resource "aws_key_pair" "kubernetes_key_pair" {
 # Kubernetes Controllers
 resource "aws_instance" "kubernetes_controllers" {
   count = 1
-
-  ami           = data.aws_ami.ubuntu.id
+  ami           = "ami-091b37bfd6e01db4f"
   instance_type = "t3.micro"
   subnet_id     = aws_subnet.kubernetes_subnet.id
   key_name      = aws_key_pair.kubernetes_key_pair.key_name
@@ -58,7 +45,7 @@ resource "aws_instance" "kubernetes_controllers" {
 resource "aws_instance" "kubernetes_workers" {
   count = 2
 
-  ami           = data.aws_ami.ubuntu.id
+  ami           = "ami-091b37bfd6e01db4f"
   instance_type = "t3.micro"
   subnet_id     = aws_subnet.kubernetes_subnet.id
   key_name      = aws_key_pair.kubernetes_key_pair.key_name

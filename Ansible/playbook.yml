@@ -7,10 +7,22 @@
 #   register: ec2_node_info
 
 
-# public_dns_name 
+# # public_dns_name 
+# - name: Python2Installation
+#   hosts: masters,workers
+#   become: true
+#   vars_files:
+#         - ./secure.yml
+#   tasks:
+#       - name: Installer Python2
+#         ansible.builtin.dnf: 
+#           name: 
+#             - python
+#           state: present
+
 
 - name: MasterInstallation
-  hosts: workers
+  hosts: masters
   become: true
   vars_files:
         - ./secure.yml

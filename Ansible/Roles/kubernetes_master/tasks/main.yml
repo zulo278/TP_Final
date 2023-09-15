@@ -13,6 +13,8 @@
       exclude=kubelet kubeadm kubectl
       EOF
   changed_when: false
+
+
 - name: Installing package
   yum:
           name: "{{ packages }}"
@@ -52,7 +54,7 @@
 - name: "Installing iproute-tc"
   package: 
      name: iproute-tc
-  ignore_errors: yes
+  ignore_errors: True
 
 - name: Pulling Required K8S Images For Master Node
   shell: kubeadm config images pull
@@ -69,7 +71,7 @@
 
 - name: Initialize the Kubernetes cluster using kubeadm
   shell: "kubeadm init --node-name k8s-master --pod-network-cidr=10.240.0.0/16  --ignore-preflight-errors=NumCPU --ignore-preflight-errors=Mem"
-  ignore_errors: yes
+  ignore_errors: True
   register: init
 - debug:
         var: init.stdout_lines
@@ -98,6 +100,6 @@
 - name: Generating Token
   shell: "kubeadm token  create  --print-join-command"
   register: tokens
-  ignore_errors: yes
+  ignore_errors: True
 - debug: 
     var: tokens.stdout_lines
