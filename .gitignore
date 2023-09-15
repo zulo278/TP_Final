@@ -1,11 +1,12 @@
 Terraform/.terraform
 
 
+Ansible/secure.yml
+
 Terraform/*.lock.hcl
 
 Terraform/*.tfstate*
 
+Terraform/*.tfvars
 
 Files
-
-ssh

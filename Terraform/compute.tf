@@ -25,7 +25,7 @@ data "aws_ami" "ubuntu" {
 # SSH Key Pair
 resource "aws_key_pair" "kubernetes_key_pair" {
   key_name   = "kubernetes-lucas"
-  public_key = file("../Files/kubernetes.id_rsa.pub")
+  public_key = file("../Files/kubernetes-lucas.pub")
 }
 
 # Kubernetes Controllers
