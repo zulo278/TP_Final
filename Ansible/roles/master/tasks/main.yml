@@ -1,0 +1,55 @@
+---
+# tasks file for master
+- name: set container_runtime_file path var if container runtime is crio
+  set_fact:
+    container_runtime_file: "crio/crio"
+  when:  container_runtime == "crio"
+- name: set container_runtime_file path var if container runtime is docker
+  set_fact:
+    container_runtime_file: "docker"
+  when:  container_runtime == "docker"
+# - name: Permissions elevation runtime container docker.sock
+#   shell: chmod 777 /var/run/dockershim.sock
+# - name: restart service docker
+#   service:
+#     name: docker
+#     state: started
+#     enabled: yes
+#   when:  container_runtime == "docker"
+
+- name: Ensure no config files is absent for scheduler 
+  file:
+    path: /etc/kubernetes/manifests/kube-apiserver.yaml
+    state: absent
+
+- name: Ensure no config file is absent for controller-manager
+  file:
+    path: /etc/kubernetes/manifests/kube-controller-manager.yaml
+    state: absent
+
+- name: Ensure no config file is absent for controller-manager
+  file:
+    path: /etc/kubernetes/manifests/etcd.yaml
+    state: absent
+
+- name: Ensure no config file is absent for controller-manager
+  file:
+    path: /etc/kubernetes/manifests/kube-scheduler.yaml
+    state: absent
+
+- name: Init Kubeadm
+  shell: |
+     kubeadm init --pod-network-cidr "{{ pod_network_cidr }}" \
+                  --control-plane-endpoint "{{ master_ip }}" \
+                  --cri-socket unix:///var/run/{{ container_runtime_file }}.sock \
+                  --ignore-preflight-errors=Mem  \
+                  --ignore-preflight-errors=NumCPU \
+                  --v=5 \
+                  {{ init_args }}
+  register: init_cluster
+- name: Create kube config directory
+  include_tasks: dir.yml
+  run_once: True           
+- name: Fetch join url for node to connect
+  include_tasks: fetch_join_url.yml
+  run_once: True

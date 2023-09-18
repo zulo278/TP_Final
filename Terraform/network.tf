@@ -126,6 +126,16 @@ resource "aws_security_group_rule" "kubernetes_ingress_rule_6" {
   security_group_id = aws_security_group.kubernetes_security_group.id
 }
 
+resource "aws_security_group_rule" "kubernetes_ingress_rule_7" {
+  type              = "egress"
+  to_port           = 0
+  from_port         = 0
+  protocol          = "-1"
+  cidr_blocks       = ["0.0.0.0/0"]
+  security_group_id = aws_security_group.kubernetes_security_group.id
+}
+
+
 # Kubernetes Public Access - Create a Network Load Balancer
 resource "aws_lb" "kubernetes_lb" {
   name               = "kubernetes"

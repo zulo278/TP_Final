@@ -19,8 +19,8 @@ resource "aws_key_pair" "kubernetes_key_pair" {
 # Kubernetes Controllers
 resource "aws_instance" "kubernetes_controllers" {
   count = 1
-  ami           = "ami-091b37bfd6e01db4f"
-  instance_type = "t3.micro"
+  ami           = "ami-008bcc0a51a849165"
+  instance_type = "t3.small"
   subnet_id     = aws_subnet.kubernetes_subnet.id
   key_name      = aws_key_pair.kubernetes_key_pair.key_name
   associate_public_ip_address = true
@@ -45,8 +45,8 @@ resource "aws_instance" "kubernetes_controllers" {
 resource "aws_instance" "kubernetes_workers" {
   count = 2
 
-  ami           = "ami-091b37bfd6e01db4f"
-  instance_type = "t3.micro"
+  ami           = "ami-008bcc0a51a849165"
+  instance_type = "t3.small"
   subnet_id     = aws_subnet.kubernetes_subnet.id
   key_name      = aws_key_pair.kubernetes_key_pair.key_name
   associate_public_ip_address = true

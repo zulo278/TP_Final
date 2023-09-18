@@ -1,5 +1,0 @@
----
-# vars file for kubernetes_master
-packages:
-        - docker
-        - iproute-tc
